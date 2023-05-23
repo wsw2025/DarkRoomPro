@@ -1,6 +1,6 @@
 import java.awt.*;
 import java.net.URL; 
-// The secret image: 
+// The secret image: a heart around CS60
 /**
  * A class that represents a picture.  This class inherits from SimplePicture
  * 	and allows the student to add functionality and picture effects.  
@@ -312,6 +312,7 @@ public class Picture extends SimplePicture
 		// for their red, green, and blue components:
 		int average = (redComponent + greenComponent + blueComponent) / 3;
 		return average;
+
 	}
 	
 	//////////////////////////// Change Colors Menu /////////////////////////////////
@@ -328,10 +329,30 @@ public class Picture extends SimplePicture
 	 */
 	public Picture negate() {
 		// TODO: Write negate
-		return null;
+		Picture newPicture = new Picture(this);
+
+		int pictureHeight = this.getHeight();
+		int pictureWidth = this.getWidth();
+
+		for(int x = 0; x < pictureWidth; x++) {
+			for(int y = 0; y < pictureHeight; y++) {
+				Pixel currentPixel = this.getPixel(x, y);
+				int red = 255-currentPixel.getRed();
+				int blue = 255-currentPixel.getBlue();
+				int green = 255-currentPixel.getGreen();
+				Pixel newPixel = newPicture.getPixel(x, y);
+//				System.out.println(average);
+				newPixel.setBlue(blue);
+				newPixel.setRed(red);
+				newPixel.setGreen(green);
+
+			}
+		}
+		return newPicture;
 	}
 	//////////////////////////// Lighten /////////////////////////////////
-	
+
+
 	/**
 	 * Creates an image that is lighter than the original image. The range of
 	 * each color component should be between 0 and 255 in the new image. The
@@ -342,9 +363,38 @@ public class Picture extends SimplePicture
 	 */
 	public Picture lighten(int lightenAmount) {
 		// TODO: Write lighten
-		return null;
-	}
+		Picture newPicture = new Picture(this);
 
+		int pictureHeight = this.getHeight();
+		int pictureWidth = this.getWidth();
+
+		for(int x = 0; x < pictureWidth; x++) {
+			for(int y = 0; y < pictureHeight; y++) {
+//				Pixel currentPixel = this.getPixel(x, y);
+				lightenHelper(newPicture.getPixel(x, y), lightenAmount, lightenAmount, lightenAmount);
+//				int newRed = Math.min(currentPixel.getRed()+lightenAmount,255);
+//				int newGreen = Math.min(currentPixel.getGreen()+lightenAmount,255);
+//				int newBlue = Math.min(currentPixel.getBlue()+lightenAmount,255);
+
+//				Pixel newPixel = newPicture.getPixel(x, y);
+//				System.out.println(average);
+//				newPixel.setBlue(newBlue);
+//				newPixel.setRed(newRed);
+//				newPixel.setGreen(newGreen);
+
+			}
+		}
+		return newPicture;
+	}
+	private void lightenHelper(Pixel currentPixel, int r, int g, int b){
+//		Pixel currentPixel = this.getPixel(x, y);
+		int newRed = Math.min(currentPixel.getRed()+r,255);
+		int newGreen = Math.min(currentPixel.getGreen()+g,255);
+		int newBlue = Math.min(currentPixel.getBlue()+b,255);
+		currentPixel.setRed(newRed);
+		currentPixel.setGreen(newGreen);
+		currentPixel.setBlue(newBlue);
+	}
 	//////////////////////////// Darken /////////////////////////////////
 
 	/**
@@ -359,7 +409,17 @@ public class Picture extends SimplePicture
 		// TODO: Write darken
 		// NOTE - This is REALLY similar to lighten, could you write a helper
 		// method that both call? Don't just copy and paste! :)
-		return null;
+		Picture newPicture = new Picture(this);
+
+		int pictureHeight = this.getHeight();
+		int pictureWidth = this.getWidth();
+
+		for(int x = 0; x < pictureWidth; x++) {
+			for(int y = 0; y < pictureHeight; y++) {
+				lightenHelper(newPicture.getPixel(x, y), -darkenAmount, -darkenAmount, -darkenAmount);
+			}
+		}
+		return newPicture;
 	}
 
 	//////////////////////////// Add[Blue,Green,Red] /////////////////////////////////
@@ -376,7 +436,17 @@ public class Picture extends SimplePicture
 		// TODO: Write addBlue
 		// NOTE - This is REALLY similar to lighten, could you write a helper
 		// method that both call? Don't just copy and paste! :)
-		return null;
+		Picture newPicture = new Picture(this);
+
+		int pictureHeight = this.getHeight();
+		int pictureWidth = this.getWidth();
+
+		for(int x = 0; x < pictureWidth; x++) {
+			for(int y = 0; y < pictureHeight; y++) {
+				lightenHelper(newPicture.getPixel(x, y), 0, 0, amount);
+			}
+		}
+		return newPicture;
 	}
 	
 	/**
@@ -391,7 +461,17 @@ public class Picture extends SimplePicture
 		// TODO: Write addRed
 		// NOTE - This is REALLY similar to lighten, could you write a helper
 		// method that both call? Don't just copy and paste! :)
-		return null;
+		Picture newPicture = new Picture(this);
+
+		int pictureHeight = this.getHeight();
+		int pictureWidth = this.getWidth();
+
+		for(int x = 0; x < pictureWidth; x++) {
+			for(int y = 0; y < pictureHeight; y++) {
+				lightenHelper(newPicture.getPixel(x, y), amount, 0, 0);
+			}
+		}
+		return newPicture;
 	}
 	
 	/**
@@ -406,9 +486,19 @@ public class Picture extends SimplePicture
 		// TODO: Write addGreen
 		// NOTE - This is REALLY similar to lighten, could you write a helper
 		// method that both call? Don't just copy and paste! :)
-		return null;
+		Picture newPicture = new Picture(this);
+
+		int pictureHeight = this.getHeight();
+		int pictureWidth = this.getWidth();
+
+		for(int x = 0; x < pictureWidth; x++) {
+			for(int y = 0; y < pictureHeight; y++) {
+				lightenHelper(newPicture.getPixel(x, y), 0, amount, 0);
+			}
+		}
+		return newPicture;
 	}
-	
+
 	//////////////////////////// Rotate Right /////////////////////////////////
 
 	/**
@@ -420,7 +510,16 @@ public class Picture extends SimplePicture
 	 */
 	public Picture rotateRight() {
 		// TODO: Write rotateRight
-		return null;
+		Picture newPicture = new Picture(this.getHeight(), this.getWidth());
+		int pictureHeight = this.getHeight();
+		int pictureWidth = this.getWidth();
+
+		for(int x = 0; x < pictureWidth; x++) {
+			for(int y = 0; y < pictureHeight; y++) {
+				newPicture.getPixel(pictureHeight-y-1, x).setColor(this.getPixel(x, y).getColor());
+			}
+		}
+		return newPicture;
 	}
 
 	//////////////////////////// Seam Carving Section /////////////////////////////////
@@ -438,7 +537,20 @@ public class Picture extends SimplePicture
 	 */
 	public Picture luminosity(){
 		// TODO: Write luminosity
-		return null;
+		Picture newPicture = new Picture(this);
+
+		int pictureHeight = this.getHeight();
+		int pictureWidth = this.getWidth();
+
+		for(int x = 0; x < pictureWidth; x++) {
+			for(int y = 0; y < pictureHeight; y++) {
+				Pixel newPixel = newPicture.getPixel(x, y);
+				newPixel.setRed(luminosityOfPixel(x, y));
+				newPixel.setBlue(luminosityOfPixel(x, y));
+				newPixel.setGreen(luminosityOfPixel(x, y));
+			}
+		}
+		return newPicture;
 	}
 	
 	
@@ -452,7 +564,12 @@ public class Picture extends SimplePicture
 	 */
 	private int luminosityOfPixel(int x, int y) {
 		// TODO: Write luminosityOfPixel
-		return 0;
+		int red = this.getPixel(x, y).getRed();
+		int blue = this.getPixel(x, y).getBlue();
+		int green = this.getPixel(x, y).getGreen();
+
+		int average = (int) (0.21 * red + 0.72 * green + 0.07 * blue);
+		return average;
 	}
 
 	//////////////////////////// Energy /////////////////////////////////
@@ -463,8 +580,21 @@ public class Picture extends SimplePicture
 	 * @return A new Picture that is the energy version of this Picture.
 	 */
 	public Picture energy(){
-		// TODO: Write energy
-		return null;
+		Picture newPicture = new Picture(this);
+
+		int pictureHeight = this.getHeight();
+		int pictureWidth = this.getWidth();
+
+		for (int x = 0; x < pictureWidth; x++){
+			for (int y = 0; y < pictureHeight; y++){
+				Pixel pixel = newPicture.getPixel(x, y);
+				int pixelEnergy = getEnergy(x, y);
+				pixel.setRed(pixelEnergy);
+				pixel.setBlue(pixelEnergy);
+				pixel.setGreen(pixelEnergy);
+			}
+		}
+		return newPicture;
 	}
 	
 	/**
@@ -476,8 +606,20 @@ public class Picture extends SimplePicture
 	 * @return The energy of this Pixel
 	 */
 	private int getEnergy(int x, int y) {
-		// TODO: Write getEnergy
-		return 0;
+		Pixel currentPixel = this.getPixel(x, y);
+		int horDif, verDif; //variables to store the horizontal and verticle differences of the pixel
+		if(x==this.getWidth()-1){
+			horDif = luminosityOfPixel(x, y) - luminosityOfPixel(x-1, y);
+		}else{
+			horDif = luminosityOfPixel(x+1, y) - luminosityOfPixel(x, y);
+		}
+
+		if(y==this.getHeight()-1){
+			verDif = luminosityOfPixel(x, y) - luminosityOfPixel(x, y-1);
+		}else{
+			verDif = luminosityOfPixel(x, y+1) - luminosityOfPixel(x, y);
+		}
+		return Math.abs(verDif)+Math.abs(horDif);
 	}
 
 
@@ -492,8 +634,55 @@ public class Picture extends SimplePicture
 	 */
 	@SuppressWarnings("unused")
 	public int[] computeSeam() {
-		// TODO: Write computeSeam
-		return null;
+		int arr[][] = new int[this.getHeight()][this.getWidth()];
+		int parent[][] = new int[this.getHeight()][this.getWidth()];
+		for(int x = 0; x < this.getWidth(); x++){
+			for (int y = 0; y < this.getHeight(); y++){
+				arr[y][x] = getEnergy(x, y); //gets table of energies
+			}
+		}
+		for (int y = 1; y < this.getHeight(); y++){
+			for (int x = 0; x < this.getWidth(); x++){
+				if(x==0){
+					if(arr[y-1][x]>arr[y-1][x+1]){
+						arr[y][x]+=arr[y-1][x+1];
+						parent[y][x]=x+1;
+					}else{
+						arr[y][x]+=arr[y-1][x];
+						parent[y][x]=x;
+					}
+				}else if(x==this.getWidth()-1){
+					if(arr[y-1][x]>arr[y-1][x-1]){
+						arr[y][x]+=arr[y-1][x-1];
+						parent[y][x]=x-1;
+					}else{
+						arr[y][x]+=arr[y-1][x];
+						parent[y][x]=x;
+					}
+				}else{
+					int min = x; //for tiebreaker scenarios, so that if the value at x and another value are both the smallest, default is x
+					for (int i = x-1; i <= x+1; i++){
+						if(arr[y-1][i]<arr[y-1][min]){
+							min=i;
+						}
+					}
+					arr[y][x]+=arr[y-1][min];
+					parent[y][x]=min;
+				}
+			}
+		}
+		int seam[] = new int[this.getHeight()];
+		int min = 0;
+		for (int x = 1; x < this.getWidth(); x++){ //determine the smallest seam end
+			if(arr[this.getHeight()-1][x]<arr[this.getHeight()-1][min]){
+				min=x;
+			}
+		}
+		seam[this.getHeight()-1]=min;
+		for (int y = this.getHeight()-2; y >= 0; y--){
+			seam[y]=parent[y+1][seam[y+1]];
+		}
+		return seam;
 	}
 
 	//////////////////////////// Show Seam /////////////////////////////////
@@ -505,8 +694,15 @@ public class Picture extends SimplePicture
 	 * @return a new Picture
 	 */
 	public Picture showSeam(){
-		// TODO: Write showSeam
-		return null;
+		Picture newPicture = new Picture(this);
+		int seam[] = computeSeam();
+		for (int y = 0; y < this.getHeight(); y++){
+			Pixel pixel = newPicture.getPixel(seam[y], y);
+			pixel.setBlue(0);
+			pixel.setRed(255);
+			pixel.setGreen(0);
+		}
+		return newPicture;
 	}
 	
 	//////////////////////////// Carving (2 methods) /////////////////////////////////
@@ -517,8 +713,21 @@ public class Picture extends SimplePicture
 	 * but have a width that is one smaller than the original.
 	 */
 	public Picture carve(){
-		// TODO: Write carve
-		return null;
+		Picture newPicture = new Picture(this.getWidth()-1, this.getHeight());
+		int arr[] = computeSeam();
+
+		for (int y = 0; y < this.getHeight(); y++){
+			int flag = 0;
+			for (int x = 0; x < this.getWidth(); x++){
+				if(arr[y]==x){
+					flag=1;
+					continue;
+				}
+				Pixel newPixel = newPicture.getPixel(x-flag,y);
+				newPixel.setColor(this.getPixel(x, y).getColor());
+			}
+		}
+		return newPicture;
 	}	
 
 	/**
@@ -533,8 +742,16 @@ public class Picture extends SimplePicture
 	 * @return a new picture with numSeams removed
 	 */
 	public Picture carveMany(int numSeams){
-		// TODO: Write carveMany
-		return null;
+		if(numSeams>this.getWidth()){
+			System.err.println("Cannot call carveMany with argument " + numSeams + " on image of width " + this.getWidth());
+			return null;
+		}
+		Picture p = this;
+		while(numSeams>0){
+			p = p.carve();
+			numSeams--;
+		}
+		return p;
 	}
 
 	
@@ -676,7 +893,10 @@ public class Picture extends SimplePicture
 		//		FileChooser.pickAFile(FileChooser.OPEN));
 		//		initialPicture.explore();
 		Picture pic 		= Picture.loadPicture("Maria1.bmp");
+		Picture pic2 = Picture.loadPicture("SecretMessage.bmp");
+		Picture newPic = pic.showDifferences(pic2);
 		pic.explore();
+
 	}
 	
 } // End of Picture class

@@ -775,8 +775,25 @@ public class Picture extends SimplePicture
 	 * 	the top left corner (0, 0).
 	 */
 	public Picture chromaKey(int xRef, int yRef, Picture background, int threshold) {
-		// TODO: Write chromaKey (Extension)
-		return null;
+		int width = Math.min(background.getWidth(), this.getWidth());
+		int height = Math.min(background.getHeight(), this.getHeight());
+		Picture newPicture = new Picture(width, height);
+
+		for (int x = 0; x < width; x++){
+			for (int y = 0; y < height; y++){
+				Pixel newPixel = newPicture.getPixel(x, y);
+				int red = Math.abs(this.getPixel(x,y).getRed()-this.getPixel(xRef, yRef).getRed());
+				int blue = Math.abs(this.getPixel(x,y).getBlue()-this.getPixel(xRef, yRef).getBlue());
+				int green = Math.abs(this.getPixel(x,y).getGreen()-this.getPixel(xRef, yRef).getGreen());
+
+				if(red<=threshold && blue<=threshold && green<=threshold){
+					newPixel.setColor(background.getPixel(x, y).getColor());
+				}else{
+					newPixel.setColor(this.getPixel(x, y).getColor());
+				}
+			}
+		}
+		return newPicture;
 	}
 
 	//////////////////////////// Flip /////////////////////////////////
